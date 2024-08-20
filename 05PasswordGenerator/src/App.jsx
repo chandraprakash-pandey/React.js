@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import './App.css'
 
 function App() {
@@ -6,6 +6,8 @@ function App() {
   const [number, setnumber] = useState(false)
   const [character, setcharacter] = useState(false)
   const [password, setpassword] = useState("")
+
+  // const   passref = useRef(null)
 
   const passGenerator = useCallback(() => {
     let pass = ""
@@ -19,9 +21,14 @@ function App() {
       pass += str[char]
     }
 
+
     setpassword(pass)
     
-  }, [length, number, character, setpassword])
+  }, [length, number, character])
+
+  const Copytoclipboard = useCallback(() => {
+    window.navigator.clipboard.writeText(password)
+  }, [password])
   
   useEffect(() => {
     passGenerator()
@@ -36,7 +43,12 @@ function App() {
       placeholder='Password'
       readOnly
       type="text" />
-      <button className='px-3 text-white bg-blue-400 rounded-e-xl'>Copy</button>
+      
+      <button 
+      onClick={Copytoclipboard}
+      className='px-3 text-white bg-blue-400 rounded-e-xl'>Copy</button>
+
+      
       <div className='flex justify-center gap-5 px-5'>
         <div>
         <input
