@@ -7,7 +7,7 @@ function App() {
   const [character, setcharacter] = useState(false)
   const [password, setpassword] = useState("")
 
-  // const   passref = useRef(null)
+  const   passref = useRef(null)
 
   const passGenerator = useCallback(() => {
     let pass = ""
@@ -27,21 +27,26 @@ function App() {
   }, [length, number, character])
 
   const Copytoclipboard = useCallback(() => {
+    passref.current?.select()
+    passref.current?.setSelectionRange(0,3)
     window.navigator.clipboard.writeText(password)
   }, [password])
   
   useEffect(() => {
     passGenerator()
   }, [length,number,setpassword,character])
+  
   return (
     <>
     <div className='bg-slate-300 w-75% text-orange-500 text-2xl font-medium rounded-lg px-4 py-4'>
       <h1>Password Generator</h1>
+      
       <input 
       value={password}
       className='w-3/4 px-4 my-5 outline-none cursor-pointer rounded-s-xl'
       placeholder='Password'
       readOnly
+      ref={passref}
       type="text" />
       
       <button 
@@ -59,7 +64,9 @@ function App() {
         className='cursor-pointer'
         onChange={(e) => {setLength(e.target.value)}}
         />
+        
         <label>Length: {length}</label>
+        
         </div>
         
         <div>
@@ -71,6 +78,7 @@ function App() {
           setnumber((prev) => !prev)
         }}
         />
+        
         <label htmlFor="checked">Number</label>
         </div>
         
@@ -83,6 +91,7 @@ function App() {
           setcharacter((prev) => !prev)
         }}
         />
+        
         <label htmlFor="checked1">Character</label>
         </div>
       </div>
